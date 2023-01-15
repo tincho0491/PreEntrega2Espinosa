@@ -178,6 +178,7 @@ let opcion5 = 0
 let total = 0
 let categorias = []
 let carrito = []
+let cantidadProductos = 0
 let saludo = true
 
 // Categorias
@@ -268,7 +269,9 @@ const comprarPorNombre = () => {
             let cantidad = unidades()
             chequearStock(productoParaComprar.nombre.toLowerCase(), cantidad)
             console.log('Producto agregado al carrito')
+            console.log(productos.find(producto => producto.nombre.toLowerCase() == opcion5))
             console.log(productos[productos.findIndex((producto) => producto.nombre.toLowerCase() == opcion5)].Stock)
+            console.log('-----------------------------')
         } else {
             console.log('Producto no encontrado. \n')
         }
@@ -317,14 +320,18 @@ const chequearStock = (nombre, cantidad) => {
         }
     } else if (cantidad > 0 && productos[productos.findIndex((producto) => producto.nombre.toLowerCase() == nombre)].Stock >= cantidad) {
         productos[productos.findIndex((producto) => producto.nombre.toLowerCase() == nombre)].Stock = productos[productos.findIndex((producto) => producto.nombre.toLowerCase() == nombre)].Stock - cantidad
-        console.log(productos[productos.findIndex((producto) => producto.nombre.toLowerCase() == nombre)].Stock)
-        if (carrito.find((producto) => producto.nombre.toLowerCase() == nombre) == undefined) {
+        console.log(productos[productos.findIndex((producto) => producto.nombre.toLowerCase() == nombre)])
+        if (carrito.some((producto) => producto.nombre.toLowerCase() == nombre)) {
+            carrito[carrito.findIndex((producto) => producto.nombre.toLowerCase() == nombre)].cantidad = carrito[carrito.findIndex((producto) => producto.nombre.toLowerCase() == nombre)].cantidad + cantidad
+        } else {
             carrito.push(productos[productos.findIndex((producto) => producto.nombre.toLowerCase() == nombre)])
+            console.log(carrito)
+            console.log(productos.filter((producto) => producto.nombre.toLowerCase() == nombre ))
+            console.log(productos.find((producto) => producto.nombre.toLowerCase() == nombre))
+            carrito[cantidadProductos] = productos.find((producto) => producto.nombre.toLowerCase() == nombre)
+            console.log(carrito)
             carrito[carrito.findIndex((producto) => producto.nombre.toLowerCase() == nombre)].cantidad = cantidad
             delete carrito[carrito.findIndex((producto) => producto.nombre.toLowerCase() == nombre)].Stock
-            console.log(carrito)
-        } else {
-            carrito[carrito.findIndex((producto) => producto.nombre.toLowerCase() == nombre)].cantidad = carrito[carrito.findIndex((producto) => producto.nombre.toLowerCase() == nombre)].cantidad + cantidad
         }
     }
 }
